@@ -19,6 +19,6 @@ echo "Running simulation..."
 ghdl -r $UUT --wave=$UUT.ghw 2>&1 | tee sim.log
 echo "==== Simulation complete ===="
 
-gtkwave $UUT.ghw &
+#gtkwave $UUT.ghw &
 
 cd $CURR_DIR

@@ -1,0 +1,6 @@
+machine:
+    pre:
+        - apt-get install ghdl
+test:
+    override:
+        - source run_tb.sh LFSR_TB pulse_tb
