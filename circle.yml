@@ -1,7 +1,7 @@
 machine:
     pre:
         - wget -O ghdl.deb https://github.com/tgingold/ghdl/releases/download/v0.33/ghdl_0.33-1ubuntu1_amd64.deb
-        - sudo dpkg -i ghdl.deb
+        - sudo dpkg -i ghdl.deb || true
         - sudo apt-get install -f
 test:
     override:
