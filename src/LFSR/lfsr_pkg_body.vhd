@@ -1,24 +1,11 @@
 library IEEE, STD;
 use IEEE.std_logic_1164.all;
-use STD.textio.all;
 --------------------------------------------------------------------------------
 package body lfsr is
 
-    procedure lfsr_adv_var (variable REG : inout std_logic_vector) is
-        variable INDEX      : integer;
-        variable FEEDBACK   : std_logic;
-    begin
-        INDEX               := REG'length;
-        FEEDBACK            := REG(C_TAPTABLE(INDEX, 1) - 1); -- Start with first tap value
-        for I in 2 to C_TAPTABLE_WIDTH loop -- Iterate over all taps
-            if C_TAPTABLE(INDEX, I) /= 0 then -- Mask invalid taps
-                FEEDBACK    := FEEDBACK xnor REG(C_TAPTABLE(INDEX, I) - 1); -- XNOR next tap value
-            end if;
-        end loop;
-        REG                 := REG(REG'high-1 downto 0) & FEEDBACK; -- Shift LFSR register and append feedback value
-    end procedure lfsr_adv_var;
-
-
+    ----------------------------------------------------------------------------
+    -- Procedure: LFSR Advance
+    ----------------------------------------------------------------------------
     procedure lfsr_adv (signal REG : inout std_logic_vector) is
         variable TEMP       : std_logic_vector(REG'range);
     begin
@@ -27,7 +14,40 @@ package body lfsr is
         REG                 <= TEMP;
     end procedure lfsr_adv;
 
+    ----------------------------------------------------------------------------
+    -- Procedure: LFSR Advance
+    ----------------------------------------------------------------------------
+    procedure lfsr_adv (
+        signal REG          : inout std_logic_vector;
+        constant RESET      : in std_logic_vector
+    ) is
+        variable TEMP       : std_logic_vector(REG'range);
+    begin
+        TEMP                := REG;
+        lfsr_adv_var(TEMP, RESET);
+        REG                 <= TEMP;
+    end procedure lfsr_adv;
 
+    ----------------------------------------------------------------------------
+    -- Procedure: LFSR Advance (Variable)
+    ----------------------------------------------------------------------------
+    procedure lfsr_adv_var (variable REG : inout std_logic_vector) is
+        variable INDEX      : integer;
+        variable FEEDBACK   : std_logic;
+    begin
+        INDEX               := REG'length;
+        FEEDBACK            := REG(C_TAPTABLE(INDEX, 0) - 1); -- Start with first tap value
+        for I in 1 to C_TAPTABLE_WIDTH-1 loop -- Iterate over all taps
+            if C_TAPTABLE(INDEX, I) /= 0 then -- Mask invalid taps
+                FEEDBACK    := FEEDBACK xnor REG(C_TAPTABLE(INDEX, I) - 1); -- XNOR next tap value
+            end if;
+        end loop;
+        REG                 := REG(REG'high-1 downto 0) & FEEDBACK; -- Shift LFSR register and append feedback value
+    end procedure lfsr_adv_var;
+
+    ----------------------------------------------------------------------------
+    -- Procedure: LFSR Advance (Variable)
+    ----------------------------------------------------------------------------
     procedure lfsr_adv_var (
         variable REG    : inout std_logic_vector;
         constant RESET  : in std_logic_vector
@@ -40,19 +60,9 @@ package body lfsr is
         end if;
     end procedure lfsr_adv_var;
 
-
-    procedure lfsr_adv (
-        signal REG          : inout std_logic_vector;
-        constant RESET      : in std_logic_vector
-    ) is
-        variable TEMP       : std_logic_vector(REG'range);
-    begin
-        TEMP                := REG;
-        lfsr_adv_var(TEMP, RESET);
-        REG                 <= TEMP;
-    end procedure lfsr_adv;
-
-
+    ----------------------------------------------------------------------------
+    -- Function: LFSR Evaluate
+    ----------------------------------------------------------------------------
     function lfsr_eval (
         constant SIZE : natural;
         constant VALUE : natural
@@ -67,7 +77,9 @@ package body lfsr is
         return REG;
     end function lfsr_eval;
 
-
+    ----------------------------------------------------------------------------
+    -- Function: LFSR Maximum
+    ----------------------------------------------------------------------------
     function lfsr_max (constant SIZE : natural) return natural is
     begin
         return 2**SIZE - 1;

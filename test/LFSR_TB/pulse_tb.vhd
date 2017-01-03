@@ -53,7 +53,7 @@ begin
     U_UUT: pulse
     generic map (
         G_lfsr_width    => 3,
-        G_period        => 7
+        G_period        => 1
     )
     port map (
         CLK             => CLK,
