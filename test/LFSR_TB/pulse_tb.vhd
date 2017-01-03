@@ -1,35 +1,54 @@
-library IEEE, LFSR;
+library IEEE, LFSR, STD;
 use IEEE.std_logic_1164.all;
 use LFSR.components.all;
+use STD.textio.all;
 --------------------------------------------------------------------------------
 entity pulse_tb is
 end pulse_tb;
 --------------------------------------------------------------------------------
 architecture tb of pulse_tb is
 
-    constant C_PERIOD : time := 10 ns;
-    constant C_EXPECTED : natural := 7;
-    constant C_EXPECTED_TIME : time := C_PERIOD * C_EXPECTED;
+    constant C_PERIOD           : time      := 10 ns;
+    constant C_EXPECTED         : natural   := 7;
+    constant C_EXPECTED_TIME    : time      := C_PERIOD * C_EXPECTED;
 
-    signal CLK  : std_logic;
-    signal RESET  : std_logic;
-    signal P  : std_logic;
+    signal CLK                  : std_logic;
+    signal RESET                : std_logic;
+    signal P                    : std_logic;
 
 begin
 
     stim_proc: process
         variable STARTED  : time;
         variable FINISHED : time;
+        variable OUTLINE  : line;
     begin
-        RESET <= '1';
+        write(OUTLINE, string'("[+] Asserting Reset"));
+        writeline(OUTPUT, OUTLINE);
+        RESET       <= '1';
+
         wait for C_PERIOD * 10;
-        RESET <= '0';
+        write(OUTLINE, string'("[+] Releasing Reset"));
+        writeline(OUTPUT, OUTLINE);
+        RESET       <= '0';
 
         wait until rising_edge(P);
-        STARTED := now;
+        write(OUTLINE, string'("[+] ("));
+        write(OUTLINE, now);
+        write(OUTLINE, string'(") First rising edge"));
+        writeline(OUTPUT, OUTLINE);
+        STARTED     := now;
 
         wait until rising_edge(P);
-        FINISHED := now;
+        write(OUTLINE, string'("[+] ("));
+        write(OUTLINE, now);
+        write(OUTLINE, string'(") Second rising edge"));
+        writeline(OUTPUT, OUTLINE);
+        FINISHED    := now;
+        write(OUTLINE, string'("[+] ("));
+        write(OUTLINE, FINISHED-STARTED);
+        write(OUTLINE, string'(") Measured duration"));
+        writeline(OUTPUT, OUTLINE);
         if (FINISHED-STARTED) /= C_EXPECTED_TIME then
             assert false report "[FAIL] Incorrect pulse period" severity failure;
         else
@@ -53,7 +72,7 @@ begin
     U_UUT: pulse
     generic map (
         G_lfsr_width    => 3,
-        G_period        => 1
+        G_period        => 7
     )
     port map (
         CLK             => CLK,
