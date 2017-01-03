@@ -8,7 +8,7 @@ package lfsr is
     ----------------------------------------------------------------------------
     constant C_TAPTABLE_WIDTH : natural := 5;
     constant C_TAPTABLE_MIN   : natural := 3;
-    constant C_TAPTABLE_MAX   : natural := 15;
+    constant C_TAPTABLE_MAX   : natural := 168;
     type t_taptable is array(C_TAPTABLE_MIN to C_TAPTABLE_MAX, 0 to C_TAPTABLE_WIDTH-1) of natural;
 
     -- Xilinx XAPP 052 v1.1 (July 7, 1996)
