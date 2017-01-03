@@ -1,9 +1,10 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 --------------------------------------------------------------------------------
-package LFSR is
+package lfsr is
 
-    type t_taptable is array(3 to 8, 1 to 4);
+    constant C_TAPTABLE_WIDTH : natural := 4;
+    type t_taptable is array(3 to 8, 1 to C_TAPTABLE_WIDTH) of natural;
     constant C_TAPTABLE : t_taptable := (
         (3, 2, 0, 0),
         (4, 3, 0, 0),
@@ -13,15 +14,25 @@ package LFSR is
         (8, 6, 5, 4)
     );
 
-    procedure lfsr_adv (variable reg : inout std_logic_vector);
     procedure lfsr_adv (
-        variable reg : inout std_logic_vector;
-        constant stopval : in std_logic_vector
+        signal REG : inout std_logic_vector
     );
-    function lfsr_val (
-        constant size : natural;
-        constant val : natural
+    procedure lfsr_adv (
+        signal REG : inout std_logic_vector;
+        constant RESET : in std_logic_vector
+    );
+    procedure lfsr_adv_var (
+        variable REG : inout std_logic_vector
+    );
+    procedure lfsr_adv_var (
+        variable REG : inout std_logic_vector;
+        constant RESET : in std_logic_vector
+    );
+    function lfsr_eval (
+        constant SIZE : natural;
+        constant VALUE : natural
     ) return std_logic_vector;
+    function lfsr_max (constant SIZE : natural) return natural;
 
-end LFSR;
+end lfsr;
 --------------------------------------------------------------------------------

@@ -8,6 +8,8 @@ end pulse_tb;
 architecture tb of pulse_tb is
 
     constant C_PERIOD : time := 10 ns;
+    constant C_EXPECTED : natural := 7;
+    constant C_EXPECTED_TIME : time := C_PERIOD * C_EXPECTED;
 
     signal CLK  : std_logic;
     signal RESET  : std_logic;
@@ -16,17 +18,27 @@ architecture tb of pulse_tb is
 begin
 
     stim_proc: process
+        variable STARTED  : time;
+        variable FINISHED : time;
     begin
         RESET <= '1';
-        wait until rising_edge(CLK);
         wait for C_PERIOD * 10;
         RESET <= '0';
+
         wait until rising_edge(P);
-        assert false report "Pulse Rising Edge" severity note;
+        STARTED := now;
+
         wait until rising_edge(P);
-        assert false report "Pulse Rising Edge" severity note;
+        FINISHED := now;
+        if (FINISHED-STARTED) /= C_EXPECTED_TIME then
+            assert false report "[FAIL] Incorrect pulse period" severity failure;
+        else
+            assert false report "[PASS]" severity note;
+        end if;
+
         wait for C_PERIOD * 10;
         assert false report "SIMULATION FINISHED" severity failure;
+
         wait;
     end process stim_proc;
 
@@ -39,10 +51,14 @@ begin
     end process clk_proc;
 
     U_UUT: pulse
+    generic map (
+        G_lfsr_width    => 3,
+        G_period        => 7
+    )
     port map (
-        CLK     => CLK,
-        RESET   => RESET,
-        PULSE   => P
+        CLK             => CLK,
+        RESET           => RESET,
+        PULSE           => P
     );
 
 end tb;

@@ -12,9 +12,9 @@ ghdl -i --work=LFSR_TB ../test/LFSR_TB/*.vhd
 ghdl -m --work=LFSR_TB pulse_tb
 
 echo "Running Simulation..."
-ghdl -r pulse_tb --vcd=pulse_tb.vcd
+ghdl -r pulse_tb --wave=pulse_tb.ghw
 echo "Simulation Complete."
 
-gtkwave pulse_tb.vcd
+gtkwave pulse_tb.ghw &
 
 cd $CURR_DIR
