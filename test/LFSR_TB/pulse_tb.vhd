@@ -22,6 +22,8 @@ begin
         variable STARTED  : time;
         variable FINISHED : time;
         variable OUTLINE  : line;
+        file JFILE   : text open write_mode is "junit.xml";
+        variable JLINE  : line;
     begin
         write(OUTLINE, string'("[+] Asserting Reset"));
         writeline(OUTPUT, OUTLINE);
@@ -49,15 +51,35 @@ begin
         write(OUTLINE, FINISHED-STARTED);
         write(OUTLINE, string'(") Measured duration"));
         writeline(OUTPUT, OUTLINE);
+
+        write(JLINE, string'("<?xml version=""1.0"" encoding=""UTF-8"" ?>"));
+        writeline(JFILE, JLINE);
+
         if (FINISHED-STARTED) /= C_EXPECTED_TIME then
             assert false report "[FAIL] Incorrect pulse period" severity failure;
+            write(JLINE, string'("<testsuites id=""pulse_tb"" name=""Pulse TB"" tests=""1"" failures=""1"">"));
+            writeline(JFILE, JLINE);
         else
             assert false report "[PASS]" severity note;
+            write(JLINE, string'("<testsuites id=""main"" name=""Main"" tests=""1"" failures=""0"">"));
+            writeline(JFILE, JLINE);
+            write(JLINE, string'("<testsuite id=""pulse_tb"" name=""Pulse TB"" tests=""1"" failures=""0"">"));
+            writeline(JFILE, JLINE);
+            write(JLINE, string'("<testcase id=""period"" name=""Period"">"));
+            writeline(JFILE, JLINE);
+            write(JLINE, string'("</testcase>"));
+            writeline(JFILE, JLINE);
+            write(JLINE, string'("</testsuite>"));
+            writeline(JFILE, JLINE);
+            write(JLINE, string'("</testsuites>"));
+            writeline(JFILE, JLINE);
         end if;
 
         wait for C_PERIOD * 10;
-        assert false report "SIMULATION FINISHED" severity failure;
 
+        file_close(JFILE);
+
+        assert false report "SIMULATION FINISHED" severity failure;
         wait;
     end process stim_proc;
 
