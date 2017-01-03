@@ -9,3 +9,4 @@ test:
         - ghdl -i --work=LFSR_TB test/LFSR_TB/*.vhd
         - ghdl -m --work=LFSR_TB pulse_tb | tee $CIRCLE_ARTIFACTS/make.log
         - ghdl -r pulse_tb --wave=$CIRCLE_ARTIFACTS/pulse_tb.ghw 2>&1 | tee $CIRCLE_ARTIFACTS/sim.log
+        - cp junit.xml $CIRCLE_TEST_REPORTS/junit.xml
