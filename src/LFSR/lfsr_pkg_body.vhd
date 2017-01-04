@@ -6,32 +6,32 @@ package body lfsr is
     ----------------------------------------------------------------------------
     -- Procedure: LFSR Advance
     ----------------------------------------------------------------------------
-    procedure lfsr_adv (signal REG : inout std_logic_vector) is
+    procedure lfsr_advance (signal REG : inout std_logic_vector) is
         variable TEMP       : std_logic_vector(REG'range);
     begin
         TEMP                := REG;
-        lfsr_adv_var(TEMP);
+        lfsr_advance_var(TEMP);
         REG                 <= TEMP;
-    end procedure lfsr_adv;
+    end procedure lfsr_advance;
 
     ----------------------------------------------------------------------------
     -- Procedure: LFSR Advance
     ----------------------------------------------------------------------------
-    procedure lfsr_adv (
+    procedure lfsr_advance (
         signal REG          : inout std_logic_vector;
         constant RESET      : in std_logic_vector
     ) is
         variable TEMP       : std_logic_vector(REG'range);
     begin
         TEMP                := REG;
-        lfsr_adv_var(TEMP, RESET);
+        lfsr_advance_var(TEMP, RESET);
         REG                 <= TEMP;
-    end procedure lfsr_adv;
+    end procedure lfsr_advance;
 
     ----------------------------------------------------------------------------
     -- Procedure: LFSR Advance (Variable)
     ----------------------------------------------------------------------------
-    procedure lfsr_adv_var (variable REG : inout std_logic_vector) is
+    procedure lfsr_advance_var (variable REG : inout std_logic_vector) is
         variable INDEX      : integer;
         variable FEEDBACK   : std_logic;
     begin
@@ -43,12 +43,12 @@ package body lfsr is
             end if;
         end loop;
         REG                 := REG(REG'high-1 downto 0) & FEEDBACK; -- Shift LFSR register and append feedback value
-    end procedure lfsr_adv_var;
+    end procedure lfsr_advance_var;
 
     ----------------------------------------------------------------------------
     -- Procedure: LFSR Advance (Variable)
     ----------------------------------------------------------------------------
-    procedure lfsr_adv_var (
+    procedure lfsr_advance_var (
         variable REG    : inout std_logic_vector;
         constant RESET  : in std_logic_vector
     ) is
@@ -56,14 +56,14 @@ package body lfsr is
         if REG = RESET then
             REG         := (REG'range => '0');
         else
-            lfsr_adv_var(REG);
+            lfsr_advance_var(REG);
         end if;
-    end procedure lfsr_adv_var;
+    end procedure lfsr_advance_var;
 
     ----------------------------------------------------------------------------
     -- Function: LFSR Evaluate
     ----------------------------------------------------------------------------
-    function lfsr_eval (
+    function lfsr_evaluate (
         constant SIZE : natural;
         constant VALUE : natural
     ) return std_logic_vector is
@@ -71,18 +71,18 @@ package body lfsr is
     begin
         if VALUE > 0 then
             for I in 1 to VALUE loop
-                lfsr_adv_var(REG);
+                lfsr_advance_var(REG);
             end loop;
         end if;
         return REG;
-    end function lfsr_eval;
+    end function lfsr_evaluate;
 
     ----------------------------------------------------------------------------
     -- Function: LFSR Maximum
     ----------------------------------------------------------------------------
-    function lfsr_max (constant SIZE : natural) return natural is
+    function lfsr_maximum (constant SIZE : natural) return natural is
     begin
         return 2**SIZE - 1;
-    end function lfsr_max;
+    end function lfsr_maximum;
 
 end lfsr;

@@ -23,7 +23,7 @@ begin
             if RESET = '1' then
                 LFSR    <= (others => '0');
             else
-                lfsr_adv(LFSR);
+                lfsr_advance(LFSR);
             end if;
         end if;
     end process lfsr_proc;

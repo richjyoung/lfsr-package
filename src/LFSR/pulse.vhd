@@ -18,7 +18,7 @@ end pulse;
 architecture rtl of pulse is
     subtype T_LFSR          is std_logic_vector(G_lfsr_width-1 downto 0);
     constant C_ZERO         : T_LFSR := (others => '0');
-    constant C_LFSR_RESET   : T_LFSR := lfsr_eval(G_lfsr_width, G_period-1);
+    constant C_LFSR_RESET   : T_LFSR := lfsr_evaluate(G_lfsr_width, G_period-1);
     signal LFSR             : T_LFSR;
 begin
 
@@ -30,7 +30,7 @@ begin
             if RESET = '1' then
                 LFSR        <= C_ZERO; -- XNOR LFSR requires zero reset
             else
-                lfsr_adv(LFSR, C_LFSR_RESET);
+                lfsr_advance(LFSR, C_LFSR_RESET);
             end if;
         end if;
     end process lfsr_proc;

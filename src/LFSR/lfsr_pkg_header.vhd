@@ -187,7 +187,7 @@ package lfsr is
     -- * Advances LFSR register by one.
     -- * Size is inferred from the input arguments.
     ----------------------------------------------------------------------------
-    procedure lfsr_adv (
+    procedure lfsr_advance (
         signal REG : inout std_logic_vector
     );
 
@@ -197,7 +197,7 @@ package lfsr is
     -- * LFSR resets after the reset value is reached.
     -- * Size is inferred from the input arguments.
     ----------------------------------------------------------------------------
-    procedure lfsr_adv (
+    procedure lfsr_advance (
         signal REG : inout std_logic_vector;
         constant RESET : in std_logic_vector
     );
@@ -207,7 +207,7 @@ package lfsr is
     -- * Advances LFSR variable by one.
     -- * Size is inferred from the input arguments.
     ----------------------------------------------------------------------------
-    procedure lfsr_adv_var (
+    procedure lfsr_advance_var (
         variable REG : inout std_logic_vector
     );
 
@@ -217,7 +217,7 @@ package lfsr is
     -- * LFSR resets after the reset value is reached.
     -- * Size is inferred from the input arguments.
     ----------------------------------------------------------------------------
-    procedure lfsr_adv_var (
+    procedure lfsr_advance_var (
         variable REG : inout std_logic_vector;
         constant RESET : in std_logic_vector
     );
@@ -228,7 +228,7 @@ package lfsr is
     --   iterations.
     -- * Size must be given as it cannot be inferred from the input arguments.
     ----------------------------------------------------------------------------
-    function lfsr_eval (
+    function lfsr_evaluate (
         constant SIZE : natural;
         constant VALUE : natural
     ) return std_logic_vector;
@@ -238,7 +238,7 @@ package lfsr is
     -- * Calculate the maximum sequence length for a chosen LFSR size.
     -- * Size must be given as it cannot be inferred from the input arguments.
     ----------------------------------------------------------------------------
-    function lfsr_max (constant SIZE : natural) return natural;
+    function lfsr_maximum (constant SIZE : natural) return natural;
 
 end lfsr;
 --------------------------------------------------------------------------------
