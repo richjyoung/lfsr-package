@@ -23,6 +23,7 @@ begin
         variable STARTED  : time;
         variable FINISHED : time;
         variable OUTLINE  : line;
+        variable RUNTIME : real;
         file JFILE   : text open write_mode is "junit.xml";
         variable JLINE  : line;
     begin
@@ -59,9 +60,14 @@ begin
             assert false report "[FAIL] Incorrect pulse period" severity failure;
         else
             assert false report "[PASS]" severity note;
-            junit_start_testsuites(JFILE, "main", "Main", 1, 0, 0);
-            junit_start_testsuite(JFILE, "pulse_tb", "Pulse TB", 1, 0, 0);
-            junit_testcase(JFILE, "period", "Period", 0);
+
+            RUNTIME := real((FINISHED-STARTED)/(1 fs)) / 1.0e15;
+            --RUNTIME := 0.000000070;
+            write(OUTLINE, RUNTIME);
+            writeline(OUTPUT, OUTLINE);
+            junit_start_testsuites(JFILE, "main", "Main", 1, 0, RUNTIME);
+            junit_start_testsuite(JFILE, "pulse_tb", "Pulse TB", 1, 0, RUNTIME);
+            junit_testcase(JFILE, "period", "Period", RUNTIME);
             junit_end_testsuite(JFILE);
             junit_end_testsuites(JFILE);
         end if;

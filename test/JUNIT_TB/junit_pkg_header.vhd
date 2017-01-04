@@ -15,7 +15,7 @@ package junit is
         NAME : in string;
         TESTS : in natural;
         FAILURES : in natural;
-        RUNTIME : in natural
+        RUNTIME : in real
     );
 
 
@@ -30,7 +30,7 @@ package junit is
         NAME : in string;
         TESTS : in natural;
         FAILURES : in natural;
-        RUNTIME : in natural
+        RUNTIME : in real
     );
 
 
@@ -43,7 +43,7 @@ package junit is
         variable JUNIT_FILE : in text;
         ID : in string;
         NAME : in string;
-        RUNTIME : in natural
+        RUNTIME : in real
     );
 
 
@@ -51,7 +51,7 @@ package junit is
         variable JUNIT_FILE : in text;
         ID : in string;
         NAME : in string;
-        RUNTIME : in natural
+        RUNTIME : in real
     );
 
 

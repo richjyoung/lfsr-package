@@ -20,7 +20,7 @@ package body junit is
         NAME : in string;
         TESTS : in natural;
         FAILURES : in natural;
-        RUNTIME : in natural
+        RUNTIME : in real
     ) is
         variable L : line;
     begin
@@ -33,7 +33,7 @@ package body junit is
         write(L, string'(""" failures="""));
         write(L, FAILURES);
         write(L, string'(""" time="""));
-        write(L, RUNTIME);
+        write(L, RUNTIME, right, 0, 9);
         write(L, string'(""">"));
         writeline(JUNIT_FILE, L);
     end procedure junit_start_testsuites;
@@ -55,7 +55,7 @@ package body junit is
         NAME : in string;
         TESTS : in natural;
         FAILURES : in natural;
-        RUNTIME : in natural
+        RUNTIME : in real
     ) is
         variable L : line;
     begin
@@ -68,7 +68,7 @@ package body junit is
         write(L, string'(""" failures="""));
         write(L, FAILURES);
         write(L, string'(""" time="""));
-        write(L, RUNTIME);
+        write(L, RUNTIME, right, 0, 9);
         write(L, string'(""">"));
         writeline(JUNIT_FILE, L);
     end procedure junit_start_testsuite;
@@ -88,7 +88,7 @@ package body junit is
         variable JUNIT_FILE : in text;
         ID : in string;
         NAME : in string;
-        RUNTIME : in natural
+        RUNTIME : in real
     ) is
         variable L : line;
     begin
@@ -97,7 +97,7 @@ package body junit is
         write(L, string'(""" name="""));
         write(L, NAME);
         write(L, string'(""" time="""));
-        write(L, RUNTIME);
+        write(L, RUNTIME, right, 0, 9);
         write(L, string'(""">"));
         writeline(JUNIT_FILE, L);
     end procedure junit_start_testcase;
@@ -107,7 +107,7 @@ package body junit is
         variable JUNIT_FILE : in text;
         ID : in string;
         NAME : in string;
-        RUNTIME : in natural
+        RUNTIME : in real
     ) is
         variable L : line;
     begin
