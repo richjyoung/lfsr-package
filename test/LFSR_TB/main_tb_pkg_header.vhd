@@ -7,7 +7,7 @@ package main_tb_pkg is
     -- Types & Constants
     ----------------------------------------------------------------------------
     constant C_MAX_STRING_LENGTH    : natural := 50;
-    constant C_TESTCASES            : natural := 2;
+    constant C_TESTCASES            : natural := 6;
 
     type T_TESTCASE is record
         NAME        : string(1 to C_MAX_STRING_LENGTH);
