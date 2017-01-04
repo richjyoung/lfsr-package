@@ -94,7 +94,7 @@ begin
         for I in TESTSUITE'range loop
             junit_start_testcase(JFILE, integer'image(I), TESTSUITE(I).NAME(1 to TESTSUITE(I).L_NAME), real((RESULTS(I).RUNTIME)/(1 fs)) / 1.0e15);
             if RESULTS(I).PASS_nFAIL = '0' then
-                junit_failure(JFILE, "period_error", "Period Error");
+                junit_failure(JFILE, "period_error", time'image(RESULTS(I).RUNTIME));
             end if;
             junit_end_testcase(JFILE);
         end loop;
