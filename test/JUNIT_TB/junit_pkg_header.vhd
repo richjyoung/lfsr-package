@@ -15,7 +15,7 @@ package junit is
         NAME : in string;
         TESTS : in natural;
         FAILURES : in natural;
-        RUNTIME : in real
+        RUNTIME : in time
     );
 
 
@@ -30,7 +30,7 @@ package junit is
         NAME : in string;
         TESTS : in natural;
         FAILURES : in natural;
-        RUNTIME : in real
+        RUNTIME : in time
     );
 
 
@@ -43,7 +43,7 @@ package junit is
         variable JUNIT_FILE : in text;
         ID : in string;
         NAME : in string;
-        RUNTIME : in real
+        RUNTIME : in time
     );
 
 
@@ -51,7 +51,7 @@ package junit is
         variable JUNIT_FILE : in text;
         ID : in string;
         NAME : in string;
-        RUNTIME : in real
+        RUNTIME : in time
     );
 
 
@@ -77,5 +77,10 @@ package junit is
     procedure junit_skipped (
         variable JUNIT_FILE : in text
     );
+
+
+    function junit_time (
+        RUNTIME : in time
+    ) return real;
 
 end junit;

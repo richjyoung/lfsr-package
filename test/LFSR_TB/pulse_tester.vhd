@@ -49,7 +49,6 @@ begin
         end if;
 
         DONE            <= '1';
-        assert false report "Tester finished" severity note;
         wait;
 
     end process stim_proc;

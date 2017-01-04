@@ -88,11 +88,11 @@ begin
         V_FINISHED  := now;
 
         junit_xml_declaration(JFILE);
-        junit_start_testsuites(JFILE, "main", "Main", C_TESTCASES, failures(RESULTS), real((V_FINISHED-V_STARTED)/(1 fs)) / 1.0e15);
-        junit_start_testsuite(JFILE, "main_tb", "Main TB", 1, 0, real((V_FINISHED-V_STARTED)/(1 fs)) / 1.0e15);
+        junit_start_testsuites(JFILE, "main", "Main", C_TESTCASES, failures(RESULTS), (V_FINISHED-V_STARTED));
+        junit_start_testsuite(JFILE, "main_tb", "Main TB", 1, 0, (V_FINISHED-V_STARTED));
 
         for I in TESTSUITE'range loop
-            junit_start_testcase(JFILE, integer'image(I), TESTSUITE(I).NAME(1 to TESTSUITE(I).L_NAME), real((RESULTS(I).RUNTIME)/(1 fs)) / 1.0e15);
+            junit_start_testcase(JFILE, integer'image(I), TESTSUITE(I).NAME(1 to TESTSUITE(I).L_NAME), RESULTS(I).RUNTIME);
             if RESULTS(I).PASS_nFAIL = '0' then
                 junit_failure(JFILE, "period_error", time'image(RESULTS(I).RUNTIME));
             end if;
