@@ -1,5 +1,6 @@
-library IEEE, LFSR, STD;
+library IEEE, JUNIT_TB, LFSR, STD;
 use IEEE.std_logic_1164.all;
+use JUNIT_TB.junit.all;
 use LFSR.components.all;
 use STD.textio.all;
 --------------------------------------------------------------------------------
@@ -52,29 +53,17 @@ begin
         write(OUTLINE, string'(") Measured duration"));
         writeline(OUTPUT, OUTLINE);
 
-        write(JLINE, string'("<?xml version=""1.0"" encoding=""UTF-8"" ?>"));
-        writeline(JFILE, JLINE);
+        junit_xml_declaration(JFILE);
 
         if (FINISHED-STARTED) /= C_EXPECTED_TIME then
             assert false report "[FAIL] Incorrect pulse period" severity failure;
-            write(JLINE, string'("<testsuites id=""pulse_tb"" name=""Pulse TB"" tests=""1"" failures=""1"">"));
-            writeline(JFILE, JLINE);
         else
             assert false report "[PASS]" severity note;
-            write(JLINE, string'("<testsuites id=""main"" name=""Main"" tests=""1"" failures=""1"" time=""0"">"));
-            writeline(JFILE, JLINE);
-            write(JLINE, string'("<testsuite id=""pulse_tb"" name=""Pulse TB"" tests=""1"" failures=""1"" time=""0"">"));
-            writeline(JFILE, JLINE);
-            write(JLINE, string'("<testcase id=""period"" name=""Period"" time=""0"">"));
-            writeline(JFILE, JLINE);
-            write(JLINE, string'("<failure message=""test_failure"">Test failure</failure>"));
-            writeline(JFILE, JLINE);
-            write(JLINE, string'("</testcase>"));
-            writeline(JFILE, JLINE);
-            write(JLINE, string'("</testsuite>"));
-            writeline(JFILE, JLINE);
-            write(JLINE, string'("</testsuites>"));
-            writeline(JFILE, JLINE);
+            junit_start_testsuites(JFILE, "main", "Main", 1, 0, 0);
+            junit_start_testsuite(JFILE, "pulse_tb", "Pulse TB", 1, 0, 0);
+            junit_testcase(JFILE, "period", "Period", 0);
+            junit_end_testsuite(JFILE);
+            junit_end_testsuites(JFILE);
         end if;
 
         wait for C_PERIOD * 10;

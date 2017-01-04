@@ -12,6 +12,7 @@ cd working
 
 echo "Importing sources..."
 ghdl -i --work=LFSR ../src/LFSR/*.vhd
+ghdl -i --work=JUNIT_TB ../test/JUNIT_TB/*.vhd
 ghdl -i --work=LFSR_TB ../test/LFSR_TB/*.vhd
 ghdl -m --work=$LIBRARY $UUT | tee make.log
 
