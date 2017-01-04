@@ -61,11 +61,13 @@ begin
             writeline(JFILE, JLINE);
         else
             assert false report "[PASS]" severity note;
-            write(JLINE, string'("<testsuites id=""main"" name=""Main"" tests=""1"" failures=""0"" time=""0"">"));
+            write(JLINE, string'("<testsuites id=""main"" name=""Main"" tests=""1"" failures=""1"" time=""0"">"));
             writeline(JFILE, JLINE);
-            write(JLINE, string'("<testsuite id=""pulse_tb"" name=""Pulse TB"" tests=""1"" failures=""0"" time=""0"">"));
+            write(JLINE, string'("<testsuite id=""pulse_tb"" name=""Pulse TB"" tests=""1"" failures=""1"" time=""0"">"));
             writeline(JFILE, JLINE);
             write(JLINE, string'("<testcase id=""period"" name=""Period"" time=""0"">"));
+            writeline(JFILE, JLINE);
+            write(JLINE, string'("<failure message=""test_failure"">Test failure</failure>"));
             writeline(JFILE, JLINE);
             write(JLINE, string'("</testcase>"));
             writeline(JFILE, JLINE);
