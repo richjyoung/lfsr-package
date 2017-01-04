@@ -1,7 +1,7 @@
 VHDL LFSR Package
 =================
 
-[![CircleCI](https://circleci.com/gh/richjyoung/lfsr-package/tree/master.svg?style=svg)](https://ccircleci.com/gh/richjyoung/lfsr-package/tree/master)
+[![CircleCI](https://circleci.com/gh/richjyoung/lfsr-package/tree/master.svg?style=svg)](https://circleci.com/gh/richjyoung/lfsr-package/tree/master)
 
 Package of simple functions and procedures to implement any Linear Feedback
 Shift Register between 3 and 168 bits.
