@@ -66,4 +66,16 @@ package junit is
         DETAIL : in string
     );
 
+
+    procedure junit_error (
+        variable JUNIT_FILE : in text;
+        MESSAGE : in string;
+        DETAIL : in string
+    );
+
+
+    procedure junit_skipped (
+        variable JUNIT_FILE : in text
+    );
+
 end junit;

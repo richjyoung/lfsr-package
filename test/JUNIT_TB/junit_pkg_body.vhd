@@ -141,4 +141,30 @@ package body junit is
         writeline(JUNIT_FILE, L);
     end procedure junit_failure;
 
+
+    procedure junit_error (
+        variable JUNIT_FILE : in text;
+        MESSAGE : in string;
+        DETAIL : in string
+    ) is
+        variable L : line;
+    begin
+        write(L, string'("<error message="""));
+        write(L, MESSAGE);
+        write(L, string'(""">"));
+        write(L, DETAIL);
+        write(L, string'("</failure>"));
+        writeline(JUNIT_FILE, L);
+    end procedure junit_error;
+
+
+    procedure junit_skipped (
+        variable JUNIT_FILE : in text
+    ) is
+        variable L : line;
+    begin
+        write(L, string'("<skipped />"));
+        writeline(JUNIT_FILE, L);
+    end procedure junit_skipped;
+
 end junit;
