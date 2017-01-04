@@ -1,7 +1,7 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 --------------------------------------------------------------------------------
-package components is
+package lfsr_components is
 
     component pulse is
         generic (
@@ -15,7 +15,7 @@ package components is
         );
     end component;
 
-end components;
+end lfsr_components;
 --------------------------------------------------------------------------------
 --package body components is
 --end components;

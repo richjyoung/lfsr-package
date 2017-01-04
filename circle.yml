@@ -8,7 +8,7 @@ test:
         - ghdl -i --work=LFSR src/LFSR/*.vhd
         - ghdl -i --work=JUNIT_TB test/JUNIT_TB/*.vhd
         - ghdl -i --work=LFSR_TB test/LFSR_TB/*.vhd
-        - ghdl -m --work=LFSR_TB pulse_tb | tee $CIRCLE_ARTIFACTS/make.log
-        - ghdl -r pulse_tb --disp-tree=proc --wave=$CIRCLE_ARTIFACTS/pulse_tb.ghw 2>&1 | tee $CIRCLE_ARTIFACTS/sim.log
+        - ghdl -m --work=LFSR_TB main_tb | tee $CIRCLE_ARTIFACTS/make.log
+        - ghdl -r main_tb --disp-tree=proc --wave=$CIRCLE_ARTIFACTS/main_tb.ghw 2>&1 | tee $CIRCLE_ARTIFACTS/sim.log
         - mkdir $CIRCLE_TEST_REPORTS/ghdl
-        - cp junit.xml $CIRCLE_TEST_REPORTS/ghdl/junit.xml
+        - cp main_tb_junit.xml $CIRCLE_TEST_REPORTS/ghdl/junit.xml

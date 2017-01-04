@@ -1,7 +1,7 @@
 library IEEE, JUNIT_TB, LFSR, STD;
 use IEEE.std_logic_1164.all;
 use JUNIT_TB.junit.all;
-use LFSR.components.all;
+use LFSR.lfsr_components.all;
 use STD.textio.all;
 --------------------------------------------------------------------------------
 entity pulse_tb is
