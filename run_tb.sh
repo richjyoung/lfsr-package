@@ -17,7 +17,7 @@ ghdl -i --work=LFSR_TB ../test/LFSR_TB/*.vhd
 ghdl -m --work=$LIBRARY $UUT | tee make.log
 
 echo "Running simulation..."
-ghdl -r $UUT --wave=$UUT.ghw 2>&1 | tee sim.log
+ghdl -r $UUT --disp-tree=proc --wave=$UUT.ghw 2>&1 | tee sim.log
 echo "==== Simulation complete ===="
 
 #gtkwave $UUT.ghw &
