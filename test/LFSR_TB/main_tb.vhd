@@ -40,7 +40,7 @@ architecture tb of main_tb is
             L_NAME      => 16,
             BITS        => 4,
             PERIOD      => lfsr_maximum(4),
-            EXPECTED    => 70 ns
+            EXPECTED    => 150 ns
         ),
         4 => (
             NAME        => "4 bit period 2                                    ",
@@ -54,7 +54,7 @@ architecture tb of main_tb is
             L_NAME      => 18,
             BITS        => 4,
             PERIOD      => lfsr_maximum(4)-1,
-            EXPECTED    => 20 ns
+            EXPECTED    => 140 ns
         )
     );
     signal RESULTS              : T_TESTRESULTS;
