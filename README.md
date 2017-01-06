@@ -25,6 +25,26 @@ Variables can be used, although are not recommended.
 Import the package files into a library of your choice, then include via the
 necessary `library` and `use` statements.
 
+* `lfsr_evaluate` - Calculate the register value of a given width LFSR after a
+number of iterations.
+* `lfsr_advance` - Advances an LFSR register by one, optionally resetting after
+a certain value is reached.
+* `lfsr_maximum` - Calculate the maximum pattern length for a given number of
+LFSR bits.
+
+### Optional Reset Behaviour
+Example - 3 bit LFSR, reset after 3 iterations
+
+Reset value given by `lfsr_evaluate(3, 3) = "110"`. LFSR incremented using
+`lfsr_advance(LFSR, "110")`.  Resulting pattern:
+```
+    +- Reset released
+... | 000 | 001 | 011 | 110 | 000 | ...
+                            +- Sequence repeats
+```
+Therefore the time period of a free-running LFSR using a reset value is one
+clock cycle greater than the count used to evaluate the final reset value.
+
 ### Example (3-bit, free running)
 ```
 architecture rtl of example is
