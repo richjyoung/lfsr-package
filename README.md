@@ -25,7 +25,7 @@ Variables can be used, although are not recommended.
 Import the package files into a library of your choice, then include via the
 necessary `library` and `use` statements.
 
-### Simple Example (3-bit, free running)
+### Example (3-bit, free running)
 ```
 architecture rtl of example is
     signal LFSR         : std_logic_vector(2 downto 0);
@@ -37,6 +37,28 @@ begin
                 LFSR    <= (others => '0');
             else
                 lfsr_advance(LFSR);
+            end if;
+        end if;
+    end process lfsr_proc;
+end rtl;
+```
+
+### Example (8-bit, free running, resets after 200)
+Same as above, except uses a larger LFSR register and specifies the count after
+which the LFSR is reset.  This count is converted by `lfsr_evaluate` to give the
+equivalent LFSR register value.
+```
+architecture rtl of example is
+    constant C_LFSR_RESET   : T_LFSR := lfsr_evaluate(8, 200);
+    signal LFSR             : std_logic_vector(7 downto 0);
+begin
+    lfsr_proc: process (CLK) is
+    begin
+        if rising_edge(CLK) then
+            if RESET = '1' then
+                LFSR    <= (others => '0');
+            else
+                lfsr_advance(LFSR, C_LFSR_RESET);
             end if;
         end if;
     end process lfsr_proc;
