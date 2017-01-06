@@ -11,6 +11,16 @@ Variables can be used, although are not recommended.
 
 > Uses tap values from Table 3 in [Xilinx XAPP 052 v1.1](https://www.xilinx.com/support/documentation/application_notes/xapp052.pdf).
 
+## Repository Structure
+
+```
++- src         - Synthesis/Simulation files
+   +- <LIB>      Organised by library
++- test        - Simulation only code
+   +- <LIB>_TB   Organised by library
++- utils       - Supporting code/documentation
+```
+
 ## Usage
 Import the package files into a library of your choice, then include via the
 necessary `library` and `use` statements.

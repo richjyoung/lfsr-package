@@ -1,3 +1,6 @@
+"""
+Convert the CSV tap table into the correct format for the VHDL constant body.
+"""
 with open('xapp_052_table_3.csv','r') as csv:
     for line in csv:
         s = line.split(',');

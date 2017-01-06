@@ -12,7 +12,9 @@ end main_tb;
 --------------------------------------------------------------------------------
 architecture tb of main_tb is
 
-    constant C_PERIOD           : time      := 10 ns;
+    ----------------------------------------------------------------------------
+    -- Test Definitions
+    ----------------------------------------------------------------------------
     constant TESTSUITE          : T_TESTSUITE := (
         0 => (
             NAME        => "3 bit max period                                  ",
@@ -57,6 +59,9 @@ architecture tb of main_tb is
             EXPECTED    => 140 ns
         )
     );
+
+    constant C_PERIOD           : time      := 10 ns;
+
     signal RESULTS              : T_TESTRESULTS;
     signal CLK                  : std_logic;
     signal RESET                : std_logic := '1';
@@ -66,12 +71,19 @@ begin
 
     FINISHED                <= done(RESULTS);
 
+
+    ----------------------------------------------------------------------------
+    -- Test Process
+    ----------------------------------------------------------------------------
     stim_proc: process
         file JFILE   : text open write_mode is "main_tb_junit.xml";
         variable JLINE  : line;
         variable V_STARTED      : time;
         variable V_FINISHED     : time;
     begin
+        ------------------------------------------------------------------------
+        -- Initial Setup
+        ------------------------------------------------------------------------
         RESET       <= '1';
         GO          <= '0';
         wait until rising_edge(CLK);
@@ -80,34 +92,51 @@ begin
         wait until rising_edge(CLK);
         wait until rising_edge(CLK);
         RESET       <= '0';
+
+        ------------------------------------------------------------------------
+        -- Run Tests
+        ------------------------------------------------------------------------
         wait until rising_edge(CLK);
         GO          <= '1';
         V_STARTED   := now;
-
         wait until FINISHED = '1';
         V_FINISHED  := now;
 
+        ------------------------------------------------------------------------
+        -- Output Test Results
+        ------------------------------------------------------------------------
         junit_xml_declaration(JFILE);
-        junit_start_testsuites(JFILE, "main", "Main", C_TESTCASES, failures(RESULTS), (V_FINISHED-V_STARTED));
-        junit_start_testsuite(JFILE, "main_tb", "Main TB", 1, 0, (V_FINISHED-V_STARTED));
+        junit_start_testsuites(JFILE, "main", "Main", C_TESTCASES,
+            failures(RESULTS), (V_FINISHED-V_STARTED));
+        junit_start_testsuite(JFILE, "main_tb", "Main TB", 1, 0,
+            (V_FINISHED-V_STARTED));
 
         for I in TESTSUITE'range loop
-            junit_start_testcase(JFILE, integer'image(I), TESTSUITE(I).NAME(1 to TESTSUITE(I).L_NAME), RESULTS(I).RUNTIME);
+            junit_start_testcase(JFILE, integer'image(I),
+                TESTSUITE(I).NAME(1 to TESTSUITE(I).L_NAME),
+                RESULTS(I).RUNTIME);
+
             if RESULTS(I).PASS_nFAIL = '0' then
                 junit_failure(JFILE, "period_error", time'image(RESULTS(I).RUNTIME));
             end if;
+
             junit_end_testcase(JFILE);
         end loop;
 
         junit_end_testsuite(JFILE);
         junit_end_testsuites(JFILE);
 
+        ------------------------------------------------------------------------
+        -- End Simulation
+        ------------------------------------------------------------------------
         wait for C_PERIOD * 10;
         assert false report "SIMULATION FINISHED" severity failure;
         wait;
     end process stim_proc;
 
-
+    ----------------------------------------------------------------------------
+    -- Instantiate testers for each test case
+    ----------------------------------------------------------------------------
     G_UUT: for I in 0 to C_TESTCASES-1 generate
         U_UUT: pulse_tester
         generic map (
@@ -125,7 +154,9 @@ begin
         );
     end generate;
 
-
+    ------------------------------------------------------------------------
+    -- Simulation Clock
+    ------------------------------------------------------------------------
     clk_proc: process
     begin
         CLK     <= '0';

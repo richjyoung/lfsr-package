@@ -187,9 +187,7 @@ package lfsr is
     -- * Advances LFSR register by one.
     -- * Size is inferred from the input arguments.
     ----------------------------------------------------------------------------
-    procedure lfsr_advance (
-        signal REG : inout std_logic_vector
-    );
+    procedure lfsr_advance (signal REG : inout std_logic_vector);
 
     ----------------------------------------------------------------------------
     -- Procedure: LFSR Advance
@@ -207,9 +205,7 @@ package lfsr is
     -- * Advances LFSR variable by one.
     -- * Size is inferred from the input arguments.
     ----------------------------------------------------------------------------
-    procedure lfsr_advance_var (
-        variable REG : inout std_logic_vector
-    );
+    procedure lfsr_advance_var (variable REG : inout std_logic_vector);
 
     ----------------------------------------------------------------------------
     -- Procedure: LFSR Advance (Variable)
@@ -241,4 +237,3 @@ package lfsr is
     function lfsr_maximum (constant SIZE : natural) return natural;
 
 end lfsr;
---------------------------------------------------------------------------------

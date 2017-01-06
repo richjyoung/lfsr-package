@@ -16,6 +16,3 @@ package lfsr_components is
     end component;
 
 end lfsr_components;
---------------------------------------------------------------------------------
---package body components is
---end components;
