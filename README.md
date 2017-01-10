@@ -61,8 +61,10 @@ purpose is clear.
 Import the package files into a library of your choice, then include via the
 necessary `library` and `use` statements.
 
-* `lfsr_evaluate` - Calculate the register value of a given width LFSR after a
-number of iterations.
+* `lfsr_evaluate` - Calculate the register value of a given LFSR after a number
+of iterations (although not required in the calculation, the register is passed
+as an argument as an efficient means of providing both the length and
+ascending/descending indexing).
 * `lfsr_advance` - Advances an LFSR register by one, optionally resetting after
 a certain value is reached.
 * `lfsr_maximum` - Calculate the maximum pattern length for a given number of
@@ -71,7 +73,7 @@ LFSR bits.
 ### Optional Reset Behaviour
 Example - 3 bit LFSR, reset after 3 iterations
 
-Reset value given by `lfsr_evaluate(3, 3) = "110"`. LFSR incremented using
+Reset value given by `lfsr_evaluate(LFSR, 3) = "110"`. LFSR incremented using
 `lfsr_advance(LFSR, "110")`.  Resulting pattern:
 ```
     +- Reset released
@@ -105,8 +107,8 @@ which the LFSR is reset.  This count is converted by `lfsr_evaluate` to give the
 equivalent LFSR register value.
 ```vhdl
 architecture rtl of example is
-    constant C_LFSR_RESET   : T_LFSR := lfsr_evaluate(8, 200);
     signal LFSR             : std_logic_vector(7 downto 0);
+    constant C_LFSR_RESET   : T_LFSR := lfsr_evaluate(LFSR, 200);
 begin
     lfsr_proc: process (CLK) is
     begin
