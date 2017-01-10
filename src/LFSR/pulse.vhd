@@ -15,7 +15,7 @@ entity pulse is
 end pulse;
 --------------------------------------------------------------------------------
 architecture rtl of pulse is
-    subtype T_LFSR          is std_logic_vector(0 to G_lfsr_width-1);
+    subtype T_LFSR          is std_logic_vector(G_lfsr_width-1 downto 0);
     constant C_ZERO         : T_LFSR := (others => '0');
     signal LFSR             : T_LFSR;
     constant C_LFSR_RESET   : T_LFSR := lfsr_evaluate(LFSR, G_period-1);
