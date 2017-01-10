@@ -1,11 +1,10 @@
 library IEEE, LFSR;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
-use LFSR.lfsr.all;
 --------------------------------------------------------------------------------
-entity pulse is
+entity pulse_counter is
     generic (
-        G_lfsr_width    : natural := 17;
+        G_counter_width    : natural := 17;
         G_period        : natural := 10000
     );
     port(
@@ -13,26 +12,25 @@ entity pulse is
         RESET           : in  std_logic;
         PULSE           : out std_logic
     );
-end pulse;
+end pulse_counter;
 --------------------------------------------------------------------------------
-architecture rtl of pulse is
-    subtype T_LFSR          is std_logic_vector(G_lfsr_width-1 downto 0);
-    constant C_ZERO         : T_LFSR := (others => '0');
-    constant C_LFSR_RESET   : T_LFSR := lfsr_evaluate(G_lfsr_width, G_period-1);
-    signal LFSR             : T_LFSR;
+architecture rtl of pulse_counter is
+    subtype T_COUNTER       is unsigned(G_counter_width-1 downto 0);
+    constant C_ZERO         : T_COUNTER := (others => '0');
+    signal COUNTER          : T_COUNTER;
 begin
 
-    PULSE                   <= '1' when LFSR = C_ZERO else '0';
+    PULSE                   <= '1' when COUNTER = C_ZERO else '0';
 
-    lfsr_proc: process (CLK) is
+    counter_proc: process (CLK) is
     begin
         if rising_edge(CLK) then
             if RESET = '1' then
-                LFSR        <= C_ZERO; -- XNOR LFSR requires zero reset
+                COUNTER     <= C_ZERO;
             else
-                lfsr_advance(LFSR, C_LFSR_RESET);
+                COUNTER     <= COUNTER + 1;
             end if;
         end if;
-    end process lfsr_proc;
+    end process counter_proc;
 
 end rtl;
