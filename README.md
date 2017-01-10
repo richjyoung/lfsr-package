@@ -27,7 +27,8 @@ input depends on the current state, and can be configured to give a sequence
 length which is close to that of an equivalent-sized counter.  LFSRs comprise a
 set of registers for each bit, and simple combinational logic to perform the
 feedback function meaning that they are very efficient in terms of space
-utilisation.
+utilisation.  Also, rather than requiring logic elements per bit in the
+register, the LFSR feedback path requires only 4 logic gates in the worst case.
 
 VHDL designs which implement LFSR counters typically rely on pre-computing a
 register value which maps to an equivalent count, such that the delay achieved
@@ -81,7 +82,7 @@ Therefore the time period of a free-running LFSR using a reset value is one
 clock cycle greater than the count used to evaluate the final reset value.
 
 ### Example (3-bit, free running)
-```
+```vhdl
 architecture rtl of example is
     signal LFSR         : std_logic_vector(2 downto 0);
 begin
@@ -102,7 +103,7 @@ end rtl;
 Same as above, except uses a larger LFSR register and specifies the count after
 which the LFSR is reset.  This count is converted by `lfsr_evaluate` to give the
 equivalent LFSR register value.
-```
+```vhdl
 architecture rtl of example is
     constant C_LFSR_RESET   : T_LFSR := lfsr_evaluate(8, 200);
     signal LFSR             : std_logic_vector(7 downto 0);
@@ -119,3 +120,37 @@ begin
     end process lfsr_proc;
 end rtl;
 ```
+
+## Resource Utilisation
+
+As a point of comparison, three separate designs for the same pulse waveform exist in the LFSR library.
+
+* pulse - LFSR
+* pulse_counter - Counter
+* pulse_shreg - Shift Register (for comedy value only)
+
+All of these designs by default produce a single-cycle pulse with a period of
+10,000 cycles, or 1 pulse per millisecond for a 100MHz system clock as a
+real-world example.  Each design is free-running from reset, with the pulse
+output in the all-zeros state to simplify the comparison logic (except the shift
+register design which would lock up with no element asserted).  As 10,000 cycles
+is not a power of 2, both the counter and the LFSR require wrapping at a preset
+value to achieve this period, meaning that they are architecturally identical
+except for the sequence generation mechanism.
+
+Each design was synthesised in Vivado 2016.4, targeted to the xc7a100tcsg324-1
+device with default settings.
+
+| Design         | LUTs         | Registers     |
+|----------------|--------------|---------------|
+| Shift Register | 3355 (5.29%) | 10000 (7.89%) |
+| Counter        | 38 (0.06%)   | 17 (0.01%)    |
+| LFSR           | 16 (0.03%)   | 17 (0.01%)    |
+
+The LFSR-based design uses roughly half the number of LUTs as the counter
+example, whilst the number of register elements is identical as expected.
+Different designs will vary, however the LFSR design will always save LUTs as
+feedback is limited to a maximum of 4 logic gates, compared to an adder per bit
+in the counter example.
+
+A one-hot shift register of this size should be a sackable offence.
