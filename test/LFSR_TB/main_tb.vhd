@@ -108,8 +108,8 @@ begin
         junit_xml_declaration(JFILE);
         junit_start_testsuites(JFILE, "main", "Main", C_TESTCASES,
             failures(RESULTS), (V_FINISHED-V_STARTED));
-        junit_start_testsuite(JFILE, "main_tb", "Main TB", 1, 0,
-            (V_FINISHED-V_STARTED));
+        junit_start_testsuite(JFILE, "main_tb", "Main TB", C_TESTCASES,
+            failures(RESULTS), (V_FINISHED-V_STARTED));
 
         for I in TESTSUITE'range loop
             junit_start_testcase(JFILE, integer'image(I),

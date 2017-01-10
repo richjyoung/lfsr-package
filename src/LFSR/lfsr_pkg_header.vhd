@@ -225,8 +225,8 @@ package lfsr is
     -- * Size must be given as it cannot be inferred from the input arguments.
     ----------------------------------------------------------------------------
     function lfsr_evaluate (
-        constant SIZE : natural;
-        constant VALUE : natural
+        constant REG    : std_logic_vector;
+        constant VALUE  : natural
     ) return std_logic_vector;
 
     ----------------------------------------------------------------------------

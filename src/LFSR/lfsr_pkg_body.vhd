@@ -36,13 +36,23 @@ package body lfsr is
         variable FEEDBACK   : std_logic;
     begin
         INDEX               := REG'length;
-        FEEDBACK            := REG(C_TAPTABLE(INDEX, 0) - 1); -- Start with first tap value
-        for I in 1 to C_TAPTABLE_WIDTH-1 loop -- Iterate over all taps
-            if C_TAPTABLE(INDEX, I) /= 0 then -- Mask invalid taps
-                FEEDBACK    := FEEDBACK xnor REG(C_TAPTABLE(INDEX, I) - 1); -- XNOR next tap value
-            end if;
-        end loop;
-        REG                 := REG(REG'high-1 downto 0) & FEEDBACK; -- Shift LFSR register and append feedback value
+        if REG'ascending then
+            FEEDBACK            := REG(C_TAPTABLE(INDEX, 0) - REG'length + 1); -- Start with first tap value
+            for I in 1 to C_TAPTABLE_WIDTH-1 loop -- Iterate over all taps
+                if C_TAPTABLE(INDEX, I) /= 0 then -- Mask invalid taps
+                    FEEDBACK    := FEEDBACK xnor REG(C_TAPTABLE(INDEX, I) - REG'length + 1); -- XNOR next tap value
+                end if;
+            end loop;
+            REG                 := REG(1 to REG'high) & FEEDBACK; -- Shift LFSR register and append feedback value
+        else
+            FEEDBACK            := REG(C_TAPTABLE(INDEX, 0) - 1); -- Start with first tap value
+            for I in 1 to C_TAPTABLE_WIDTH-1 loop -- Iterate over all taps
+                if C_TAPTABLE(INDEX, I) /= 0 then -- Mask invalid taps
+                    FEEDBACK    := FEEDBACK xnor REG(C_TAPTABLE(INDEX, I) - 1); -- XNOR next tap value
+                end if;
+            end loop;
+            REG                 := REG(REG'high-1 downto 0) & FEEDBACK; -- Shift LFSR register and append feedback value
+        end if;
     end procedure lfsr_advance_var;
 
     ----------------------------------------------------------------------------
@@ -64,17 +74,17 @@ package body lfsr is
     -- Function: LFSR Evaluate
     ----------------------------------------------------------------------------
     function lfsr_evaluate (
-        constant SIZE : natural;
-        constant VALUE : natural
+        constant REG    : std_logic_vector;
+        constant VALUE  : natural
     ) return std_logic_vector is
-        variable REG : std_logic_vector(SIZE-1 downto 0) := (others => '0');
+        variable V_REG  : std_logic_vector(REG'range) := (others => '0');
     begin
         if VALUE > 0 then
             for I in 1 to VALUE loop
-                lfsr_advance_var(REG);
+                lfsr_advance_var(V_REG);
             end loop;
         end if;
-        return REG;
+        return V_REG;
     end function lfsr_evaluate;
 
     ----------------------------------------------------------------------------
