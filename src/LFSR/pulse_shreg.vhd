@@ -3,9 +3,8 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 use LFSR.lfsr.all;
 --------------------------------------------------------------------------------
-entity pulse_counter is
+entity pulse_shreg is
     generic (
-        G_counter_width    : natural := 17;
         G_period        : natural := 10000
     );
     port(
@@ -13,25 +12,25 @@ entity pulse_counter is
         RESET           : in  std_logic;
         PULSE           : out std_logic
     );
-end pulse_counter;
+end pulse_shreg;
 --------------------------------------------------------------------------------
-architecture rtl of pulse_counter is
-    subtype T_COUNTER       is unsigned(G_counter_width-1 downto 0);
-    constant C_ZERO         : T_COUNTER := (others => '0');
-    signal COUNTER          : T_COUNTER;
+architecture rtl of pulse_shreg is
+    subtype T_SHIFTREG      is std_logic_vector(G_period-1 downto 0);
+    constant C_ZERO         : T_SHIFTREG := (0 => '1', others => '0');
+    signal SHIFTREG         : T_SHIFTREG;
 begin
 
-    PULSE                   <= '1' when T_COUNTER = C_ZERO else '0';
+    PULSE                   <= '1' when SHIFTREG = C_ZERO else '0';
 
-    counter_proc: process (CLK) is
+    shreg_proc: process (CLK) is
     begin
         if rising_edge(CLK) then
             if RESET = '1' then
-                COUNTER     <= C_ZERO;
+                SHIFTREG    <= C_ZERO;
             else
-                COUNTER     <= COUNTER + 1;
+                SHIFTREG    <= SHIFTREG(G_period-2 downto 0) & SHIFTREG(G_period-1);
             end if;
         end if;
-    end process counter_proc;
+    end process shreg_proc;
 
 end rtl;
