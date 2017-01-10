@@ -4,7 +4,7 @@ use IEEE.numeric_std.all;
 --------------------------------------------------------------------------------
 entity pulse_counter is
     generic (
-        G_counter_width    : natural := 17;
+        G_counter_width : natural := 17;
         G_period        : natural := 10000
     );
     port(
@@ -28,7 +28,11 @@ begin
             if RESET = '1' then
                 COUNTER     <= C_ZERO;
             else
-                COUNTER     <= COUNTER + 1;
+                if to_integer(COUNTER) = G_period-1 then
+                    COUNTER     <= C_ZERO;
+                else
+                    COUNTER     <= COUNTER + 1;
+                end if;
             end if;
         end if;
     end process counter_proc;
