@@ -6,7 +6,10 @@ VHDL LFSR Package
 Package of simple functions and procedures to implement any Linear Feedback
 Shift Register between 3 and 168 bits.
 
-LFSR registers are declared as `std_logic_vector` signals using `downto` ranges.
+LFSR registers are declared as `std_logic_vector` signals, and are implemented
+with the feedback path input the the right-hand side of the register after a
+left shift.
+
 Variables can be used, although are not recommended.
 
 > Uses tap values from [Xilinx XAPP 052 v1.1 Table 3](https://www.xilinx.com/support/documentation/application_notes/xapp052.pdf).
