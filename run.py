@@ -6,5 +6,7 @@ lib_lfsr = vu.add_library('lfsr')
 lib_lfsr.add_source_files('src/LFSR/*.vhd')
 lib_lfsr_tb = vu.add_library('lfsr_tb')
 lib_lfsr_tb.add_source_files('test/LFSR_TB/*.vhd')
+lib_lfsr_tb = vu.add_library('junit_tb')
+lib_lfsr_tb.add_source_files('test/JUNIT_TB/*.vhd')
 
 vu.main()
