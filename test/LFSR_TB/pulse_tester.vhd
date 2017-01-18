@@ -1,6 +1,5 @@
-library IEEE, JUNIT_TB, LFSR, STD;
+library IEEE, LFSR, STD;
 use IEEE.std_logic_1164.all;
-use JUNIT_TB.junit.all;
 use LFSR.lfsr_components.all;
 use STD.textio.all;
 --------------------------------------------------------------------------------
