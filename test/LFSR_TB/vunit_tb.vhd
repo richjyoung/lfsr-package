@@ -25,6 +25,8 @@ architecture tb of vunit_tb is
     );
     
     signal lfsr_3 : std_logic_vector(2 downto 0) := (others => '0');
+    signal lfsr_8 : std_logic_vector(7 downto 0) := (others => '0');
+    signal lfsr_16 : std_logic_vector(15 downto 0) := (others => '0');
 
 begin
 
@@ -34,6 +36,8 @@ begin
     vunit_proc: process
         variable v_iterations: natural := 0;
         variable v_lfsr_3_check : std_logic_vector(2 downto 0) := (others => '0');
+        variable v_lfsr_8_check : std_logic_vector(7 downto 0) := (others => '0');
+        variable v_lfsr_16_check : std_logic_vector(15 downto 0) := (others => '0');
     begin
         test_runner_setup(runner, runner_cfg);
         logger_init(display_format => level);
@@ -43,16 +47,38 @@ begin
 
                     for I in 3 to 30 loop
                         check_equal(lfsr_maximum(I), c_max_ints(I), "Checking " & integer'image(I) & "-bit LFSR Max");
-                        debug("Max cycles for bit width " & integer'image(I) & ": " & integer'image(lfsr_maximum(I)));
                     end loop;
 
                 elsif run("sequence_3_bit") then
+
                     while v_iterations < lfsr_maximum(3) loop
                         wait until rising_edge(clk);
                         check_equal(lfsr_3, v_lfsr_3_check, "3-bit LFSR sequence check");
                         v_lfsr_3_check := v_lfsr_3_check(1 downto 0) & (v_lfsr_3_check(2) xnor v_lfsr_3_check(1));
                         lfsr_advance(lfsr_3);
+                        v_iterations := v_iterations + 1;
                     end loop;
+                
+                elsif run("sequence_8_bit") then
+
+                    while v_iterations < lfsr_maximum(8) loop
+                        wait until rising_edge(clk);
+                        check_equal(lfsr_8, v_lfsr_8_check, "8-bit LFSR sequence check");
+                        v_lfsr_8_check := v_lfsr_8_check(6 downto 0) & (v_lfsr_8_check(7) xnor v_lfsr_8_check(5) xnor v_lfsr_8_check(4) xnor v_lfsr_8_check(3));
+                        lfsr_advance(lfsr_8);
+                        v_iterations := v_iterations + 1;
+                    end loop;
+                
+                elsif run("sequence_16_bit") then
+
+                    while v_iterations < lfsr_maximum(16) loop
+                        wait until rising_edge(clk);
+                        check_equal(lfsr_16, v_lfsr_16_check, "16-bit LFSR sequence check");
+                        v_lfsr_16_check := v_lfsr_16_check(14 downto 0) & (v_lfsr_16_check(15) xnor v_lfsr_16_check(14) xnor v_lfsr_16_check(12) xnor v_lfsr_16_check(3));
+                        lfsr_advance(lfsr_16);
+                        v_iterations := v_iterations + 1;
+                    end loop;
+                
                 end if;
             end loop;
 

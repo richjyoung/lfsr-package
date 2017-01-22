@@ -5,10 +5,5 @@ machine:
         - sudo apt-get install -f
 test:
     override:
-        - ghdl -i --work=LFSR src/LFSR/*.vhd
-        - ghdl -i --work=JUNIT_TB test/JUNIT_TB/*.vhd
-        - ghdl -i --work=LFSR_TB test/LFSR_TB/*.vhd
-        - ghdl -m --work=LFSR_TB main_tb | tee $CIRCLE_ARTIFACTS/make.log
-        - ghdl -r main_tb --disp-tree=proc --wave=$CIRCLE_ARTIFACTS/main_tb.ghw 2>&1 | tee $CIRCLE_ARTIFACTS/sim.log
-        - mkdir $CIRCLE_TEST_REPORTS/ghdl
-        - cp main_tb_junit.xml $CIRCLE_TEST_REPORTS/ghdl/junit.xml
+        - mkdir $CIRCLE_TEST_REPORTS/vunit
+        - python run.py -x $CIRCLE_TEST_REPORTS/vunit/vunit.xml
