@@ -8,4 +8,4 @@ test:
         - mkdir $CIRCLE_TEST_REPORTS/vunit
         - mkdir $CIRCLE_ARTIFACTS/vunit
         - python run.py -x $CIRCLE_TEST_REPORTS/vunit/vunit.xml
-        - cp -rp vunit_out/test_output/* $CIRCLE_ARTIFACTS/vunit
+        - rsync -avz --exclude '**/ghdl' vunit_out/test_output/ $CIRCLE_ARTIFACTS/vunit/
